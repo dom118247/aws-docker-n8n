@@ -1,34 +1,30 @@
-name: Deploy CloudFormation Stack
+name: Debug Secrets
 
-on:
-  push:
-    branches:
-      - main
-  workflow_dispatch: 
+on: workflow_dispatch
 
 jobs:
-  deploy:
+  debug:
     runs-on: ubuntu-latest
     
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-      
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
-      
-      - name: Verify AWS Credentials
-        run: aws sts get-caller-identity
-      
-      - name: Deploy CloudFormation Stack
+      - name: Check if secrets are set
         run: |
-          aws cloudformation deploy \
-            --template-file n8n-stack.yml \
-            --stack-name n8n-traefik \
-            --region us-east-1 \
-            --capabilities CAPABILITY_IAM \
-            --no-fail-on-empty-changeset
+          echo "Checking secrets..."
+          
+          if [ -n "$ACCESS_KEY" ]; then
+            echo "✅ AWS_ACCESS_KEY_ID is set"
+            echo "Length: ${#ACCESS_KEY} characters"
+            echo "First 4 chars: ${ACCESS_KEY:0:4}"
+          else
+            echo "❌ AWS_ACCESS_KEY_ID is EMPTY or NOT SET"
+          fi
+          
+          if [ -n "$SECRET_KEY" ]; then
+            echo "✅ AWS_SECRET_ACCESS_KEY is set"
+            echo "Length: ${#SECRET_KEY} characters"
+          else
+            echo "❌ AWS_SECRET_ACCESS_KEY is EMPTY or NOT SET"
+          fi
+        env:
+          ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          SECRET_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
