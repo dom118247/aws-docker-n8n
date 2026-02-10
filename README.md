@@ -5,4 +5,4 @@ CloudFormation template that creates an EC2 instance hosting two Docker containe
 - Traefik: Reverse proxy with automatic HTTPS/SSL
 - N8N: Workflow automation platform
 
-When deployed, Traefik automatically routes traffic from your domain (e.g., `n8n.dom-beard.com`) to the N8N application with automatic SSL certificate management.
+When deployed, Traefik automatically routes traffic from my domain (e.g., `n8n.dom-beard.com`) to the N8N application with automatic SSL certificate management.
