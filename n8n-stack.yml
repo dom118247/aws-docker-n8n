@@ -20,7 +20,7 @@ Parameters:
   SSLEmail:
     Type: String 
     Description: AWS Account which hold SSL Cert
-    Default: dommo1998@gmail.com
+    Default: {EMAIL_ADDRESS}
 
 Resources:
   EC2CFNDOCKER:
